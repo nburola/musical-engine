@@ -1,0 +1,38 @@
+---
+title: "ESM 244: Assignment #2, Part 1"
+author: "Nathaniel Burola"
+date: "2/20/2020"
+output: html_document
+---
+```{r setup, include=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task 1: Open Science Perspectives 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+install.packages("tidyverse")
+install.packages("dplyr")
+```
+
+### Attaching packages from library 
+```{r, echo=TRUE, message=FALSE, warning=FALSE, results="hide"}
+library(tidyverse)
+library(dplyr)
+```
+
+### Preparing a brief statement on open science (400 - 500 words)
+```{r, echo=TRUE}
+#According to Bahlai et al., 2018, open science is a global movement aiming to make scientific research and data accessible to anyone including communities that are not often served by scientific products. Open science can benefit researchers and environmental scientists through four areas such as publishing, funding, resource management and sharing, and career advancement (McKiernan et al., 2016).  Open publications have been found to get more citations, more media coverage, and have open and transparent review processes compared to subscription journals (McKiernan et al., 2016). Major funding sources such as The United States National Institutes of Health (NIH) have been mandating open sharing of research (McKiernan et al., 2016). With resource management and sharing, open science ensures the preservation and accessibility of any open access (OA) data in the future. By sharing OA data, it increases the visibility of one’s work which can help create new employment opportunities (McKiernan et al., 2016). 
+
+#Open science is still met with skepticism from the scientific community due to a variety of factors. Bahlai et al., 2018 explain that a scientist’s career stage to their cultural context may create barriers to specific aspects of open science. Sensitive data may raise privacy concerns if made public depending on the level of confidentiality. Financial limitations may prevent scientists from fully committing to open science. Questioning the decision of senior collaborators who may not wish to work open may lead to negative perceptions among work colleagues in a lab (Bahlai et al., 2018). 
+
+#McKiernan et al., 2016 point out that open science engagement does not require a long-term commitment or intensive effort. An individual researcher can take certain steps to promote open science such as publishing in open access venues whenever possible and publicly sharing data and materials via a trusted repository on Github. My GP has a heavy emphasis on modeling with hundreds of lines of code. To facilitate better feedback, the repository where our model has been stored has our GP advisor and PhD mentor added as collaborators. If permission is received from our client, it may be possible to set the repository to public to enable some public opinion of our model.  
+
+#A limitation that I have seen with GP proposals is the struggle over intellectual property concerning the results of the project. When writing a GP proposal last year, a client wished to have full intellectual rights to the results of the project. This was met with doubt from the Bren administration as the entire point of the GP project is for students to present the fruits of their labor to the public and future employers. This fits in line with open science principles as the public could have access to data if they asked. This limitation can be overcome by discussing project proposals ahead of time with the Bren administration and the client to avoid precarious situations. 
+
+#Word Count: 475 words 
+```

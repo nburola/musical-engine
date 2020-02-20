@@ -1,0 +1,131 @@
+---
+title: "ESM 244: Assignment #2, Part 3"
+author: "Nathaniel Burola"
+date: "2/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task 3: Making a Map of Hawaiian Land Use/Land Cover and Watersheds 
+
+### Attaching all relevant packages 
+```{r, echo=TRUE, message=FALSE, warning=FALSE, results="hide"}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(leaflet)
+library(htmlwidgets)
+library(htmltools)
+```
+
+### Reading in the land use/land cover data 
+```{r, echo=TRUE, message=FALSE, warning=FALSE, results="hide"}
+
+hawai_land <- read_sf(dsn = ".", layer = "Land_Use_Land_Cover_LULC")
+
+st_crs(hawai_land) = 4326 #Setting the coordinate reference system (CRS) to 4326 
+
+plot(hawai_land)
+
+```
+
+### Reading in the watershed data 
+```{r, echo=TRUE, message=FALSE, warning=FALSE, results="hide"}
+
+hawai_water <- read_sf(dsn = ".", layer = "Watersheds")
+
+st_crs(hawai_water) = 4326 #Setting the CRS to 4326 
+
+plot(hawai_water)
+ 
+```
+
+### Map 1: Landuse/Land Cover Types for All Main Hawaiian Islands 
+
+### Finding out the different types of land use layers in the landcover column 
+```{r, echo=TRUE, message=FALSE, warning=FALSE, results="hide"}
+unique(hawai_land$landcover) #Informs what types of land use covers exist in the dataset 
+
+#Creating a new column in the data set and categorizing the following land use covers in order to streamline organization 
+landmap <- hawai_land %>%  
+  mutate(
+    landmapnew = case_when(
+      landcover == "Cropland and Pasture" ~ "Farmland", 
+      landcover == "Commerical and Services" ~ "Urban", 
+      landcover == "Residential" ~ "Human Dwellings", 
+      landcover == "Evergreen Forest Land" ~ "Forest", 
+      landcover == "Other Urban or Built-up Land" ~ "Urban", 
+      landcover == "Mixed Rangeland" ~ "Rural",
+      landcover == "Industrial" ~ "Urban", 
+      landcover == "Streams and Canals" ~ "Watershed", 
+      landcover == "Orchards, Groves, Vineyards, Nurseries and Ornamental Horticultural Areas" ~ "Rural", 
+      landcover == "Shrub and Brush Rangeland" ~ "Rangeland", 
+      landcover == "Forested Wetland" ~ "Forest", 
+      landcover == "Reservoirs" ~ "Watershed", 
+      landcover == "Nonforested Wetland" ~ "Forest", 
+      landcover == "Bare Exposed Rock" ~ "Rock", 
+      landcover == "Sandy Areas Other than Beaches" ~ "Sand", 
+      landcover == "Transportation, Communications and Utilities" ~ "Urban", 
+      landcover == "Herbaceous Rangeland" ~ "Rangeland", 
+      landcover == "Beaches" ~ "Beaches", 
+      landcover == "Other Agricultural Land" ~ "Farmland", 
+      landcover == "Lakes" ~ "Watershed", 
+      landcover == "Strip Mines, Quarries, and Gravel Pits" ~ "Mining", 
+      landcover == "Mixed Barren Land" ~ "Barren Land", 
+      landcover == "Bays and Estuaries" ~ "Watershed",
+      landcover == "Mixed Urban or Built-up Land" ~ "Urban",
+      landcover == "Transitional Areas" ~ "Unknown", 
+      landcover == "Industrial and Commercial Complexes" ~ "Urban", 
+      landcover == "Confined Feeding Operations" ~ "Urban", 
+      landcover == "0" ~ "NA"
+  
+    )
+  )
+
+tmap_mode("view")
+```
+
+### Creating the map which contains all the new categories for the land use layers in Hawaii 
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+tm_shape(landmap) + 
+  tm_polygons("landmapnew", title = "Land Cover Types for All Main Hawaiian Islands", style = "fixed") + 
+  tm_borders() + 
+  tm_layout(legend.title.size = 1,
+           legend.text.size = 0.6,
+          legend.position = c("left","bottom"),
+          legend.bg.color = "white",
+          legend.bg.alpha = 1) + 
+  tm_basemap("Esri.NatGeoWorldMap") 
+```
+
+### Interpreting the land use layer of Hawaii map 
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+#As seen in the land use layer of the Hawaii map, most of the Hawaiian islands are covered in forest followed by a lot of rangeland. There are small pockets of urban areas which makes sense since Hawaii is a tourist destination and a popular place to live. However, it is remarkable to see just how much nature is preserved! 
+```
+
+### Map 2: Different watershed areas for all of the main Hawaiian Islands 
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+#Constructing the map of all the various watersheds with the Hawaiian Islands 
+
+tm_shape(hawai_water) + 
+  tm_polygons("area_sqmi", title = "Square Miles of Watershed Areas") + 
+  tm_borders() + 
+  tm_layout(legend.title.size = 1,
+           legend.text.size = 0.6,
+          legend.position = c("left","bottom"),
+          legend.bg.color = "white",
+          legend.bg.alpha = 1) + 
+  tm_basemap("Esri.NatGeoWorldMap")
+  
+
+
+```
+
+### Interpreting the various watershed areas of the Hawaii map
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+#As seen in the watershed area map of Hawaii, most if not all the islands are covered by 0 - 4 square miles of watershed areas. There are a couple of watershed areas that are greater than 6 square miles according to the map, however. 
+```
+
